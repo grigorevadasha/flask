@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
+    <link rel="stylesheet"  href="{{ url_for('static', filename='web.css') }}">
+    <title>Календарь-планировщик</title>
+</head>
+<body class="fon1">
+    <div>
+        <!-- Фиксированное меню -->
+        <header class="header" id="header">
+            <div class="container">
+                <div class="header_main">
+                    <a href="{{ url_for('home') }}" class="header_naz">ЗдоровьеПлюс</a>
+                    <nav class="nav" id="nav">
+                        <a href="{{ url_for('list') }}" class="nav_link">Лекарства</a>
+                        <a href="{{ url_for('calendar') }}" class="nav_link">Календарь-планировщик</a>
+                        <a href="#" class="nav_link" id="loginBtn">Вход/Регистрация</a>
+                    </nav>                    
+                </div>
+            </div>
+        </header>
+
+        <!-- Контейнер календаря -->
+        <div id="calendar"></div>
+
+        <!-- Модальное окно для добавления напоминания -->
+        <div class="cal" style="display: none;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 class="tit">Добавить напоминание</h2>
+                <div class="formadd">
+                    <label for="Title">Название:</label>
+                    <input type="text" class="input-field2" id="Title" required>
+                </div>
+                <div class="formadd">
+                    <label for="Date">Дата:</label>
+                    <input type="date" class="input-field2" id="Date" required>
+                </div>
+                <div class="formadd">
+                    <label for="Time">Время:</label>
+                    <input type="time" class="input-field2" id="Time" required>
+                </div>
+                <div class="formadd">
+                    <label for="Medicine">Выбор лекарства:</label>
+                    <select class="input-field2" id="Medicine">
+                        <option value="">Выберите лекарство</option>
+                        <option value="Лекарство 1">Лекарство 1</option>
+                        <option value="Лекарство 2">Лекарство 2</option>
+                        <option value="Лекарство 3">Лекарство 3</option>
+                    </select>
+                </div>
+                <div class="formadd">
+                    <label for="Comment">Комментарий:</label>
+                    <textarea class="input-field2" id="Comment" rows="5" required></textarea>
+                </div>
+                <br>
+                <button id="add_cal_Btn">Добавить</button>
+            </div>
+        </div>
+    </div>
+    <!-- Модальное окно для редактирования напоминания -->
+    <div class="cal-edit" style="display: none;">
+        <div class="modal-content">
+            <span class="close-edit">&times;</span>
+            <h2 class="tit">Изменить напоминание</h2>
+            <div class="formadd">
+                <label for="EditTitle">Название:</label>
+                <input type="text" class="input-field2" id="EditTitle" required>
+            </div>
+            <div class="formadd">
+                <label for="EditDate">Дата:</label>
+                <input type="date" class="input-field2" id="EditDate" required>
+            </div>
+            <div class="formadd">
+                <label for="EditTime">Время:</label>
+                <input type="time" class="input-field2" id="EditTime" required>
+            </div>
+            <div class="formadd">
+                <label for="EditMedicine">Выбор лекарства:</label>
+                <select class="input-field2" id="EditMedicine">
+                    <option value="">Выберите лекарство</option>
+                    <option value="Лекарство 1">Лекарство 1</option>
+                    <option value="Лекарство 2">Лекарство 2</option>
+                    <option value="Лекарство 3">Лекарство 3</option>
+                </select>
+            </div>
+            <div class="formadd">
+                <label for="EditComment">Комментарий:</label>
+                <textarea class="input-field2" id="EditComment" rows="5" required></textarea>
+            </div>
+            <br>
+            <button id="save-edit-btn">Сохранить изменения</button>
+            <button id="delete-btn">Удалить</button>
+        </div>
+    </div>
+
+
+
+    <!--Регистрация/Вход-->
+    <div class="log" style="display: none;">
+        <form class="sing-in">
+            <span class="close-btn1">&times;</span>
+            <h2 class="title">Вход</h2>
+            <div class="input-field">
+                <input type="text" placeholder="Имя пользователя" required>
+            </div>
+            <div class="input-field">
+                <input type="password" placeholder="Пароль" required>
+            </div>
+            <input type="submit" value="Войти" class="btn">
+            <p class="account-text">Нет аккаунта?
+                <a href="" id="sing-up-btn" class="slk">Зарегистрироваться</a>
+            </p>
+        </form>
+        <form class="sing-up" style="display: none;">
+            <span class="close-btn2">&times;</span>
+            <h2 class="title">Регистрация</h2>
+            <div class="input-field">
+                <input type="text" placeholder="Имя пользователя" required>
+            </div>
+            <div class="input-field">
+                <input type="text" placeholder="Email" required>
+            </div>
+            <div class="input-field">
+                <input type="password" placeholder="Пароль" required>
+            </div>
+            <input type="submit" value="Зарегистрироваться" class="btn">
+            <p class="account-text">Есть аккаунт?
+                <a href="" id="sing-in-btn" class="slk">Войти</a>
+            </p>
+        </form>
+    </div>
+    
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'ru', // Русская локализация
+                firstDay: 1, // Неделя начинается с понедельника
+                initialView: 'timeGridWeek', // Начальный вид: недельный календарь
+                editable: true, // Разрешить редактирование событий
+                selectable: true, // Разрешить выбор слотов
+                slotMinTime: '00:00:00',
+                slotMaxTime: '24:00:00',
+                eventColor: 'rgb(26, 150, 74)',
+                eventBorderColor: '#000000',
+                eventTextColor: '#000000',
+                headerToolbar: {
+                    left: 'prev,next,addReminder',
+                    center: 'title',
+                    right: 'timeGridDay,timeGridWeek,dayGridMonth'
+                },
+                buttonText: {
+                    today: 'Сегодня',
+                    month: 'Месяц',
+                    week: 'Неделя',
+                    day: 'День'
+                },
+                customButtons: {
+                    addReminder: {
+                        text: 'Добавить напоминание',
+                        click: openModal // Открытие окна для добавления напоминания
+                    }
+                },
+                eventClick: function (info) {
+                    openEditModal(info.event); // Открытие окна редактирования при клике на событие
+                }
+            });
+        
+            calendar.render();
+        
+            const modal1 = document.querySelector('.cal'); // Модальное окно для добавления
+            const modalEdit = document.querySelector('.cal-edit'); // Модальное окно для редактирования
+            const closeBtn = document.querySelector('.close'); // Кнопка закрытия окна добавления
+            const closeEditBtn = document.querySelector('.close-edit'); // Кнопка закрытия окна редактирования
+            const addcalBtn = document.getElementById('add_cal_Btn'); // Кнопка "Добавить" в модальном окне добавления
+            const saveEditBtn = document.getElementById('save-edit-btn'); // Кнопка "Сохранить" в окне редактирования
+            const deleteBtn = document.getElementById('delete-btn'); // Кнопка "Удалить" в окне редактирования
+            let currentEvent = null; // Переменная для хранения текущего события
+        
+            // Функция для открытия окна добавления
+            function openModal() {
+                modal1.style.display = 'flex';
+            }
+        
+            // Функция для открытия окна редактирования
+            function openEditModal(event) {
+                currentEvent = event; // Сохраняем текущее событие
+                document.getElementById('EditTitle').value = event.title.split(' - ')[0]; // Название
+                document.getElementById('EditDate').value = event.startStr.split('T')[0]; // Дата
+                document.getElementById('EditTime').value = event.startStr.split('T')[1].substring(0, 5); // Время
+                document.getElementById('EditMedicine').value = event.title.split(' - ')[1] || ''; // Лекарство
+                document.getElementById('EditComment').value = event.extendedProps.comment || ''; // Комментарий
+                modalEdit.style.display = 'flex';
+            }
+        
+            // Функция для закрытия всех модальных окон
+            function closeModal() {
+                modal1.style.display = 'none';
+                modalEdit.style.display = 'none';
+            }
+        
+            // Закрытие окна добавления
+            closeBtn.onclick = closeModal;
+        
+            // Закрытие окна редактирования
+            closeEditBtn.onclick = closeModal;
+        
+            // Добавление напоминания
+            addcalBtn.onclick = function (e) {
+                e.preventDefault(); // Предотвращаем перезагрузку страницы
+                var title = document.getElementById('Title').value;
+                var date = document.getElementById('Date').value;
+                var time = document.getElementById('Time').value;
+                var medicine = document.getElementById('Medicine').value;
+                var comment = document.getElementById('Comment').value;
+        
+                if (title && date && time) {
+                    var dateTime = date + 'T' + time; // Объединяем дату и время
+                    calendar.addEvent({
+                        title: title + ' - ' + (medicine || ''), // Название + Лекарство
+                        start: dateTime,
+                        allDay: false,
+                        extendedProps: {
+                            comment: comment // Комментарий как дополнительное свойство
+                        }
+                    });
+                    closeModal(); // Закрыть окно добавления
+                    clearFields(); // Очистить поля
+                } else {
+                    alert('Пожалуйста, заполните все поля.');
+                }
+            };
+        
+            // Сохранение изменений в событии
+            saveEditBtn.onclick = function () {
+                var newTitle = document.getElementById('EditTitle').value;
+                var newDate = document.getElementById('EditDate').value;
+                var newTime = document.getElementById('EditTime').value;
+                var newMedicine = document.getElementById('EditMedicine').value;
+                var newComment = document.getElementById('EditComment').value;
+        
+                if (newTitle && newDate && newTime) {
+                    var newDateTime = newDate + 'T' + newTime;
+                    currentEvent.setProp('title', newTitle + ' - ' + (newMedicine || ''));
+                    currentEvent.setStart(newDateTime);
+                    currentEvent.setExtendedProp('comment', newComment);
+                    closeModal(); // Закрыть окно редактирования
+                } else {
+                    alert('Пожалуйста, заполните все поля.');
+                }
+            };
+        
+            // Удаление события
+            deleteBtn.onclick = function () {
+                if (currentEvent) {
+                    currentEvent.remove(); // Удаляем текущее событие
+                    closeModal(); // Закрыть окно редактирования
+                }
+            };
+        
+            // Очистка полей формы добавления
+            function clearFields() {
+                document.getElementById('Title').value = '';
+                document.getElementById('Date').value = '';
+                document.getElementById('Time').value = '';
+                document.getElementById('Medicine').value = '';
+                document.getElementById('Comment').value = '';
+            }
+        });
+        
+
+        //Регистрация и Вход
+        // Получаем элементы
+    const modal = document.querySelector('.log');
+    const closeBtn1 = document.querySelector('.close-btn1');
+    const closeBtn2 = document.querySelector('.close-btn2');
+    const loginBtn = document.getElementById('loginBtn');
+    const signUpBtn = document.getElementById('sing-up-btn');
+    const signInBtn = document.getElementById('sing-in-btn');
+    const signInForm = document.querySelector('.sing-in');
+    const signUpForm = document.querySelector('.sing-up');
+
+    // Функция для открытия модального окна
+    function openModal() {
+        modal.style.display = 'flex';
+    }
+
+    // Функция для закрытия модального окна
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    // Открываем модальное окно при нажатии на кнопку "Войти/регистрация"
+    loginBtn.onclick = openModal;
+
+    // Закрываем модальное окно при нажатии на кнопку закрытия
+    closeBtn1.onclick = closeModal;
+    closeBtn2.onclick = closeModal;
+
+    // Переключение между формами
+    signUpBtn.onclick = function(event) {
+        event.preventDefault();
+        signInForm.style.display = 'none';
+        signUpForm.style.display = 'block';
+    };
+
+    signInBtn.onclick = function(event) {
+        event.preventDefault();
+        signUpForm.style.display = 'none';
+        signInForm.style.display = 'block';
+    };
+    </script>
+</body>
+</html>
+
+

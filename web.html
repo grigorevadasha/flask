@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"  href="{{ url_for('static', filename='web.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
+    <title>ЗдоровьеПлюс</title>
+</head>
+<body class="fon">
+    <div>
+        <!-- Фиксированное меню -->
+        <header class="header" id="header">
+            <div class="container">
+                <div class="header_main">
+                    <a href="web.html" class="header_naz">ЗдоровьеПлюс</a>
+                    <nav class="nav" id="nav">
+                        <a href="{{ url_for('list') }}" class="nav_link">Лекарства</a>
+                        <a href="{{ url_for('calendar') }}" class="nav_link">Календарь-планировщик</a>
+                        <a href="#" class="nav_link" id="loginBtn">Вход/Регистрация</a>
+                    </nav>                    
+                </div>
+            </div>
+        </header>
+
+    <!-- Добро пожаловать! -->
+        <div class="intro" id="intro">
+            <div class="container">
+                <div class="intro_main">
+                    <div class="intro_content">
+                        <img src="{{ url_for('static', filename='1.jpeg') }}" class="intro_image">
+                        <h1 class="intro_title">Добро пожаловать в ЗдоровьеПлюс!</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Раздел О нас -->
+        <section class="section1" id="about">
+            <div class="container">
+                <div class="section_head1">
+                    <h3 class="section_title1">О нас</h3>
+                    <div class="section_text1">
+                        <p>
+                            На нашем сайте представлен справочник всех возможных лекарств, который содержит подробные описания, 
+                            инструкции и рекомендации по их применению. Вы сможете найти необходимую информацию 
+                            о лекарствах и узнать, как правильно использовать их для лечения различных заболеваний.<br>
+                            Кроме того, мы предлагаем уникальную возможность воспользоваться календарём-планировщиком
+                            для приёма лекарств. Этот инструмент поможет вам легко настроить расписание приёма препаратов,
+                            чтобы не пропустить важные дозировки и соблюдать предписания вашего врача.
+                        </p>
+                        <div class="about2">
+                        <img src="{{ url_for('static', filename='3.jfif') }}" class="section_image1">
+                        <img src="{{ url_for('static', filename='4.jpg') }}" class="section_image1">
+                        <img src="{{ url_for('static', filename='5.jpg') }}" class="section_image1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Раздел Шаги создания календаря -->
+        <section class = "section2" id="about2">
+            <div class="container">
+                <div class="section_header2">
+                    <h3 class="section_title2">Составьте свое расписание за 4 простых шага</h3>
+                    <div class ="section_text2">
+                        <p> Используйте конструктор расписания, чтобы создать ежедневные 
+                           и/или еженедельные расписания, идеально подходящие для любой цели.<br>
+                            При создании и поддержании расписания вы обнаружите, что ваши дни
+                           становятся более организованными и продуктивными.<br> 
+                            Следуйте четырем простым шагам, описанным ниже, чтобы создать свое
+                           собственное расписание всего за несколько минут.</p>
+                        <img src="{{ url_for('static', filename='2.jpg') }}" class="section_image2">
+                    </div>
+                    <div class="timeline">
+                        <div class="step">
+                            <div class="circle">1</div>
+                            <div class="text-box">
+                                <p>Выберите дни и время</p>
+                            </div>
+                        </div>
+                        <div class="line"></div>
+                        <div class="step">
+                            <div class="circle">2</div>
+                            <div class="text-box">
+                                <p>Добавьте нужный препарат</p>
+                            </div>
+                        </div>
+                        <div class="line"></div>
+                        <div class="step">
+                            <div class="circle">3</div>
+                            <div class="text-box">
+                                <p>Настройте свое расписание</p>
+                            </div>
+                        </div>
+                        <div class="line"></div>
+                        <div class="step">
+                            <div class="circle">4</div>
+                            <div class="text-box">
+                                <p>Управляйте своим расписанием</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Раздел О сайте -->
+        <section class ="section3" id="about3">
+            <div class="container">
+                <div class="section_text3">
+                    <p>
+                        Информация на сайте ЗдоровьеПлюс.ru – справочная. 
+                        Содержимое сайта ЗдоровьеПлюс.ru – инструкции, текст, графика, 
+                        видео, изображения предназначены исключительно для справочных целей. 
+                        Информация, размещённая на сайте ЗдоровьеПлюс.ru не предназначена 
+                        для замены профессиональной медицинской консультации, диагностики или лечения.<br>
+                        ЗдоровьеПлюс.ru — справочник лекарственных препаратов. Всё о здоровье, 
+                        отзывы, мнения, вопросы и ответы, а также другие полезные разделы и сервисы.<br>
+                        Все права защищены. 2024 © ООО «ЗдоровьеПлюс.ру» <br>
+                        ЗдоровьеПлюс® 
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!--Регистрация/Вход-->
+    <div class="log" style="display: none;">
+        <form class="sing-in">
+            <span class="close-btn1">&times;</span>
+            <h2 class="title">Вход</h2>
+            <div class="input-field">
+                <input type="text" placeholder="Имя пользователя" required>
+            </div>
+            <div class="input-field">
+                <input type="password" placeholder="Пароль" required>
+            </div>
+            <input type="submit" value="Войти" class="btn">
+            <p class="account-text">Нет аккаунта?
+                <a href="" id="sing-up-btn" class="slk">Зарегистрироваться</a>
+            </p>
+        </form>
+        <form class="sing-up" style="display: none;">
+            <span class="close-btn2">&times;</span>
+            <h2 class="title">Регистрация</h2>
+            <div class="input-field">
+                <input type="text" placeholder="Имя пользователя" required>
+            </div>
+            <div class="input-field">
+                <input type="text" placeholder="Email" required>
+            </div>
+            <div class="input-field">
+                <input type="password" placeholder="Пароль" required>
+            </div>
+            <input type="submit" value="Зарегистрироваться" class="btn">
+            <p class="account-text">Есть аккаунт?
+                <a href="" id="sing-in-btn" class="slk">Войти</a>
+            </p>
+        </form>
+    </div>
+
+<script>
+    // Получаем элементы
+    const modal = document.querySelector('.log');
+    const closeBtn1 = document.querySelector('.close-btn1');
+    const closeBtn2 = document.querySelector('.close-btn2');
+    const loginBtn = document.getElementById('loginBtn');
+    const signUpBtn = document.getElementById('sing-up-btn');
+    const signInBtn = document.getElementById('sing-in-btn');
+    const signInForm = document.querySelector('.sing-in');
+    const signUpForm = document.querySelector('.sing-up');
+
+    // Функция для открытия модального окна
+    function openModal() {
+        modal.style.display = 'flex';
+    }
+
+    // Функция для закрытия модального окна
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    // Открываем модальное окно при нажатии на кнопку "Войти/регистрация"
+    loginBtn.onclick = openModal;
+
+    // Закрываем модальное окно при нажатии на кнопку закрытия
+    closeBtn1.onclick = closeModal;
+    closeBtn2.onclick = closeModal;
+
+    // Переключение между формами
+    signUpBtn.onclick = function(event) {
+        event.preventDefault();
+        signInForm.style.display = 'none';
+        signUpForm.style.display = 'block';
+    };
+
+    signInBtn.onclick = function(event) {
+        event.preventDefault();
+        signUpForm.style.display = 'none';
+        signInForm.style.display = 'block';
+    };
+
+</script>
+   
+     
+</body>
+</html>
+
+
+
+
+  
+

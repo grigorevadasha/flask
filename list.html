@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='web.css') }}">
+    <title>Лекарства</title>
+</head>
+<body class="fon">
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header_main">
+                <a href="{{ url_for('home') }}" class="header_naz">ЗдоровьеПлюс</a>
+                <nav class="nav" id="nav">
+                    <a href="{{ url_for('list') }}" class="nav_link">Лекарства</a>
+                    <a href="{{ url_for('calendar') }}" class="nav_link">Календарь-планировщик</a>
+                    <a href="#" class="nav_link" id="loginBtn">Вход/Регистрация</a>
+                </nav>                    
+            </div>
+        </div>
+    </header>
+
+    <!-- Форма поиска -->
+    <div class="search">
+        <form method="POST">
+            <input type="text" name="query" placeholder="Введите название лекарства">
+            <button type="submit">Найти</button>
+        </form>
+    </div>
+
+       
+    <!--Регистрация/Вход-->
+    <div class="log" style="display: none;">
+        <form class="sing-in">
+            <span class="close-btn1">&times;</span>
+            <h2 class="title">Вход</h2>
+            <div class="input-field">
+                <input type="text" placeholder="Имя пользователя" required>
+            </div>
+            <div class="input-field">
+                <input type="password" placeholder="Пароль" required>
+            </div>
+            <input type="submit" value="Войти" class="btn">
+            <p class="account-text">Нет аккаунта?
+                <a href="" id="sing-up-btn" class="slk">Зарегистрироваться</a>
+            </p>
+        </form>
+        <form class="sing-up" style="display: none;">
+            <span class="close-btn2">&times;</span>
+            <h2 class="title">Регистрация</h2>
+            <div class="input-field">
+                <input type="text" placeholder="Имя пользователя" required>
+            </div>
+            <div class="input-field">
+                <input type="text" placeholder="Email" required>
+            </div>
+            <div class="input-field">
+                <input type="password" placeholder="Пароль" required>
+            </div>
+            <input type="submit" value="Зарегистрироваться" class="btn">
+            <p class="account-text">Есть аккаунт?
+                <a href="" id="sing-in-btn" class="slk">Войти</a>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        // Получаем элементы
+        const modal = document.querySelector('.log');
+        const closeBtn1 = document.querySelector('.close-btn1');
+        const closeBtn2 = document.querySelector('.close-btn2');
+        const loginBtn = document.getElementById('loginBtn');
+        const signUpBtn = document.getElementById('sing-up-btn');
+        const signInBtn = document.getElementById('sing-in-btn');
+        const signInForm = document.querySelector('.sing-in');
+        const signUpForm = document.querySelector('.sing-up');
+
+        // Функция для открытия модального окна
+        function openModal() {
+            modal.style.display = 'flex';
+        }
+
+        // Функция для закрытия модального окна
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Открываем модальное окно при нажатии на кнопку "Войти/регистрация"
+        loginBtn.onclick = openModal;
+
+        // Закрываем модальное окно при нажатии на кнопку закрытия
+        closeBtn1.onclick = closeModal;
+        closeBtn2.onclick = closeModal;
+
+        // Переключение между формами
+        signUpBtn.onclick = function(event) {
+            event.preventDefault();
+            signInForm.style.display = 'none';
+            signUpForm.style.display = 'block';
+        };
+
+        signInBtn.onclick = function(event) {
+            event.preventDefault();
+            signUpForm.style.display = 'none';
+            signInForm.style.display = 'block';
+        };
+
+    </script>
+
+
+</body>
+</html>
